@@ -9,6 +9,7 @@ import java.io.Serializable;
  *
  * @author hades
  */
+//nabilla tes
 public class PesanCuaca implements Serializable{
         private String pesanCuaca;
     public PesanCuaca(String pesanCuaca) {

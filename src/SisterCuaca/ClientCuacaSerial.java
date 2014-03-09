@@ -9,8 +9,6 @@ import java.net.*;
  *
  * @author hades
  */
-//Nabilla testing
-//testing lagi untuk kedua
 public class ClientCuacaSerial {
     // deklarasi socket
     private static Socket socket;
@@ -21,20 +19,20 @@ public class ClientCuacaSerial {
     
     // deklarasi boolean untuk status, diletakkan dalam scope private static agar dapat diakses keseluruhan class
     private static boolean active;
-     public static void main(String[] args) throws IOException{
+    public static void main(String[] args) throws IOException{
         
-        // inisialisasi socket dan I/O
-        socket = null;
-        out = null;
-        in = null;
+    // inisialisasi socket dan I/O
+    socket = null;
+    out = null;
+    in = null;
 
-        try{
-            // mengkoneksikan client dengan socket yang sudah ada di port 4444 untuk host: localhost
-            socket = new Socket("localhost",4444);
+     try{
+         // mengkoneksikan client dengan socket yang sudah ada di port 4444 untuk host: localhost
+         socket = new Socket("localhost",4444);
 
-            // menghubungkan I/O stream dengan socket
-            out = new PrintWriter(socket.getOutputStream(),true);
-            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+         // menghubungkan I/O stream dengan socket
+         out = new PrintWriter(socket.getOutputStream(),true);
+         in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         } catch (UnknownHostException e) {
             System.err.println("Don't know about host: localhost.");
             System.exit(1);
@@ -62,45 +60,32 @@ public class ClientCuacaSerial {
                     oos.writeObject(new PesanCuaca(fromUser));
             }            
         }
- 
         // socket dan I/O stream ditutup
         out.close();
         in.close();
         stdIn.close();
         socket.close();
     }
-       private static class threads extends Thread {
-        
+       
+    private static class threads extends Thread {
         // tidak membutuhkan constructor, hanya berjalan menjalan fungsi run setiap diinstansiasi di fungsi utama
-        public void run(){
-            try{
-                
-ObjectInputStream ois =
-                new ObjectInputStream( 
-                    new BufferedInputStream( socket.getInputStream() ));                // membaca input dari server
-                  try {
-               while(true){
-                pesan = (PesanCuaca) ois.readObject();
-                                   System.out.println(pesan.getString());   
-
-               }
-            } catch (ClassNotFoundException ex) {
-                System.out.println("ClassNotFound: " + ex.getMessage());
-            }
-              //  while (pesan.getString() != null) {
-                    // cek apabila input dari server adalah "<Server> Exit." maka berhenti membaca dan keluar
-                //    if (pesan.getString().equals("Server : you quit")){
-                  //      break;
-                  //  }
-                    // pesan dari server akan ditampilkan pada console
-                    
-               // }
+       public void run(){
+           
+       try{
+           ObjectInputStream ois =new ObjectInputStream(new BufferedInputStream( socket.getInputStream() ));// membaca input dari server
+           try {
+                    while(true){
+                    pesan = (PesanCuaca) ois.readObject();
+                    System.out.println(pesan.getString());
+                    }
+                } catch (ClassNotFoundException ex) {
+                    System.out.println("ClassNotFound: " + ex.getMessage());
+                }
                 // ketika sudah berhenti membaca maka status thread diubah jadi false sehingga tidak dapat lagi membaca input dari user pada console
                 active = false;
             } catch(IOException e){
                 
             } 
-            
         }
-}
+    }
 }
