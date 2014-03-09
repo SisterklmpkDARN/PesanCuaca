@@ -9,6 +9,7 @@ import java.net.*;
  *
  * @author hades
  */
+//Nabilla testing
 public class ClientCuacaSerial {
     // deklarasi socket
     private static Socket socket;
