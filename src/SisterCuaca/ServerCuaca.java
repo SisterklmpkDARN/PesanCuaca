@@ -88,7 +88,9 @@ public class ServerCuaca {
                              out.writeObject(new PesanCuaca(s));
                              System.out.println(s);}
                         }
-               
+                    else{
+                    out.writeObject(new PesanCuaca("input salah"));
+                    }
                         out.flush();
                         
                 /*
