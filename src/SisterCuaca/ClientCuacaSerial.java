@@ -10,6 +10,7 @@ import java.net.*;
  * @author hades
  */
 //Nabilla testing
+//testing lagi untuk kedua
 public class ClientCuacaSerial {
     // deklarasi socket
     private static Socket socket;
