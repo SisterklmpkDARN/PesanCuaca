@@ -13,17 +13,19 @@ import java.util.logging.Logger;
  *
  * @author hades
  */
+
 public class ServerCuaca {
      public static void main(String[] args) throws IOException {
 
         int port = 4444;
         boolean listening = true;
         
-        try (ServerSocket serverSocket = new ServerSocket(port)) { 
+        try (ServerSocket serverSocket = new ServerSocket(port)) {
             while (listening) {
-	            new ServerCuacaThread(serverSocket.accept()).start();
-	        }
-	    } catch (IOException e) {
+                new ServerCuacaThread(serverSocket.accept()).start();
+            }
+        } 
+        catch (IOException e) {
             System.err.println("Could not listen on port " + port);
             System.exit(-1);
         }
@@ -45,46 +47,50 @@ class ServerCuacaThread extends Thread {
           this.socket = socket;
       }
     
-    public void run() {      
-        
-              try {
-                  System.out.println("Client connected..");
-                  in  = new ObjectInputStream(socket.getInputStream());
-                  pesan = (PesanCuaca) in.readObject();
-                  //print perintah cuaca dari client
-                  System.out.println("From client: " + pesan.getString() ); 
-                  out = new ObjectOutputStream(socket.getOutputStream());
-              } catch (IOException ex) {
-                  Logger.getLogger(ServerCuacaThread.class.getName()).log(Level.SEVERE, null, ex);
-              } catch (ClassNotFoundException ex) {
-                Logger.getLogger(ServerCuacaThread.class.getName()).log(Level.SEVERE, null, ex);
-            }
+      public void run() {
+          try {
+              System.out.println("Client connected..");
+              in  = new ObjectInputStream(socket.getInputStream());
+              pesan = (PesanCuaca) in.readObject();
+
+              //print perintah cuaca dari client
+              System.out.println("From client: " + pesan.getString() );
+              out = new ObjectOutputStream(socket.getOutputStream());
+          } 
+          catch (IOException ex) {
+              Logger.getLogger(ServerCuacaThread.class.getName()).log(Level.SEVERE, null, ex);
+          } 
+          catch (ClassNotFoundException ex) {
+              Logger.getLogger(ServerCuacaThread.class.getName()).log(Level.SEVERE, null, ex);
+          }
 
            // if(pesan.getString().equals("semua")){
-              try{
-            FileInputStream fstream = new FileInputStream("E:\\Praktikum Semester 6\\Sister\\PesanCuaca\\src\\SisterCuaca\\WeatherForecast.txt");
+          try {
+              FileInputStream fstream = new FileInputStream("C:\\Users\\Public\\Documents\\Kuliah\\SISTER\\Praktikum 01\\PesanCuaca\\src\\SisterCuaca\\WeatherForecast.txt");
             
-            try (DataInputStream in = new DataInputStream(fstream)) {
-                BufferedReader br = new BufferedReader(new InputStreamReader(in));
-                String strLine = null;
-                String[] splitHari;
-                String[] splitCuaca;
-                
-                
-                while ((strLine = br.readLine()) != null)  { 
-                    splitHari = strLine.split(",");
-                    splitCuaca = splitHari[1].split(" - ");
-                    ramalan.add(splitHari[0]);
-                    cuaca.add(splitCuaca[1]);
+              try (DataInputStream in = new DataInputStream(fstream)) {
+                  BufferedReader br = new BufferedReader(new InputStreamReader(in));
+                  String strLine = null;
+                  String[] splitHari;
+                  String[] splitCuaca;
+
+                  while ((strLine = br.readLine()) != null)  {
+                      //System.out.println("strLine:" + strLine);
+                      splitHari = strLine.split(",");
+                      splitCuaca = splitHari[1].split(" - ");
+                      ramalan.add(splitHari[0]);
+                      cuaca.add(splitCuaca[1]);
                 }
   //              for(int i=0;i<ramalan.size();i++){
   //                  System.out.println(ramalan.get(i)); 
   //                  System.out.println(cuaca.get(i));
   //              }
-            }
-          }catch (Exception e){
+              }
+          }
+          catch (Exception e){
               System.err.println("Error: " + e.getMessage());
           }
+          
           try {
               int a = 0;
               while(true) {
@@ -95,7 +101,7 @@ class ServerCuacaThread extends Thread {
                         a++;
                         int index=-1;
                         for(int i=0;i<ramalan.size();i++){
-                            if(pesan.getString().equals(ramalan.get(i))){
+                            if(pesan.getString().equalsIgnoreCase(ramalan.get(i))){
                                 index=i;
                             }
                         }
@@ -105,11 +111,9 @@ class ServerCuacaThread extends Thread {
                             pesan.setPesanCuaca("");
                             //break;
                         }
-                            
-
                         else{
-                          System.out.println("Cuaca hari ini : "+ cuaca.get(index));
-                          try {
+                            System.out.println("Cuaca hari ini : "+ cuaca.get(index));
+                            try {
                                 out.writeObject(new PesanCuaca("Cuaca hari ini : "+cuaca.get(index)));
                                 //break;
                                 pesan.setPesanCuaca("");
@@ -119,7 +123,6 @@ class ServerCuacaThread extends Thread {
                               }
                           }
                         a=0;
-                        
                       }
                    }
               }
@@ -129,10 +132,11 @@ class ServerCuacaThread extends Thread {
               out.close();
               in.close();
               socket.close();
-                  } catch (IOException ex) {
-                      Logger.getLogger(ServerCuacaThread.class.getName()).log(Level.SEVERE, null, ex);
-                  }
-        }   
-    }
+          } 
+          catch (IOException ex) {
+              Logger.getLogger(ServerCuacaThread.class.getName()).log(Level.SEVERE, null, ex);
+          }
+      }
+}
 
 
