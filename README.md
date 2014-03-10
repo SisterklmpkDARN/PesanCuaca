@@ -12,7 +12,7 @@ Tugas Sister 1
 4.hasil program akan terlihat di console
 
 ------------------------------------------------------
-Versi Billa :
+Update :
 - Inputannya adalah hari, dengan huruf kapital, misal : Senin, Selasa
 - Hasilnya akan langsung mengeluarkan cuaca
 - Kalau inputannya huruf kecil akan infinite loop (belum diperbaiki)
@@ -25,3 +25,8 @@ Update :
 - SERVER: Cek kondisi jika inputan tidak dikenali
 
 note: nama package jangan lupa diubah
+
+------------------------------------------------------------
+Update :
+- nama package udah diubah
+- inputan udah pake file json
