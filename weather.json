@@ -1,0 +1,27 @@
+[
+   {
+    "hari": "Senin",
+    "tgl": "11 Maret 2014",
+    "cuaca": "Hujan"
+   },
+   {
+    "hari": "Selasa",
+    "tgl": "12 Maret 2014",
+    "cuaca": "Cerah berawan"
+   },
+   {
+    "hari": "Rabu",
+    "tgl": "13 Maret 2014",
+    "cuaca": "Mendung"
+   },
+   {
+    "hari": "Kamis",
+    "tgl": "14 Maret 2014",
+    "cuaca": "Cerah"
+   },
+   {
+    "hari": "Jumat",
+    "tgl": "15 Maret 2014",
+    "cuaca": "Mendung"
+   }
+]

@@ -4,12 +4,13 @@
  * and open the template in the editor.
  */
 
-package SisterCuaca;
+package org.sister.client;
 
 /**
  *
  * @author bey0nd
  */
+import org.sister.domain.PesanCuaca;
 import java.net.*;
 import java.io.*;
 import java.util.logging.Level;
@@ -38,7 +39,7 @@ public class ClientCuaca {
             // mengkoneksikan client dengan socket yang sudah ada di port 4444 untuk host: localhost
             socket = new Socket("localhost",4444);
             System.out.println("Silahkan masukkan keyword nama hari atau ketik 'semua' untuk seluruh perkiraan cuaca");
-            System.out.println("Contoh: 'semua' atau 'senin' atau 'selasa' (tanpa tanda petik)");
+            System.out.println("Contoh: 'semua' atau 'senin' atau 'selasa' atau 'exit'(tanpa tanda petik)");
             // menghubungkan I/O stream dengan socket
             out = new PrintWriter(socket.getOutputStream(),true);
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));

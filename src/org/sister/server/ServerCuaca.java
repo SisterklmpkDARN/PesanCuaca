@@ -1,8 +1,9 @@
-package SisterCuaca;
+package org.sister.server;
 
 import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.FileInputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
@@ -12,6 +13,11 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.sister.domain.PesanCuaca;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 public class ServerCuaca {
      public static void main(String[] args) throws IOException {
@@ -59,27 +65,21 @@ class ServerCuacaThread extends Thread {
           
           // Mengisi arraylist hari dan ramalannya
           try {
-              FileInputStream fstream = new FileInputStream("C:\\Users\\Prameswari\\Documents\\PesanCuaca\\src\\SisterCuaca\\WeatherForecast.txt");
-            
-              try (DataInputStream in = new DataInputStream(fstream)) {
-                  BufferedReader br = new BufferedReader(new InputStreamReader(in));
-                  String strLine = null;
-                  String[] splitHari, splitCuaca, splitTanggal;
-                  
-                  while ((strLine = br.readLine()) != null)  {
-                      //System.out.println("strLine:" + strLine);
-                      splitHari = strLine.split(",");
-                      splitTanggal = strLine.split(" - ");
-                      splitCuaca = splitHari[1].split(" - ");
-                      ramalan.add(splitHari[0]);
-                      tanggal.add(splitTanggal[0]);
-                      cuaca.add(splitCuaca[1]);
-                  }
-              }
-          }
-          catch (Exception e){
-              System.err.println("Error: " + e.getMessage());
-          }
+              JSONParser parser = new JSONParser();
+              ArrayList<PesanCuaca> arrayPesan = new ArrayList<>();
+              
+              Object obj = parser.parse(new FileReader("E:\\Praktikum Semester 6\\PesanCuaca\\weather.json"));
+ 
+                JSONArray ja = (JSONArray) obj;
+                for (int i = 0; i < ja.size(); ++i) {
+                    JSONObject jo = (JSONObject) ja.get(i);
+                    String hari = (String) jo.get("hari");
+                    String tgl = (String) jo.get("tgl");
+                    String cuaca = (String) jo.get("cuaca");
+                    PesanCuaca pesan = new PesanCuaca(hari, tgl, cuaca);
+                    arrayPesan.add(pesan);
+                    //System.out.println(arrayPesan.get(i).getHari());
+                }
           
           try {
               while(true) {
@@ -90,16 +90,16 @@ class ServerCuacaThread extends Thread {
                       break;
                   }
                   else if(pesan.getString().equalsIgnoreCase("semua")) {
-                        for (int i=0; i<cuaca.size(); i++) {
-                            out.writeObject(new PesanCuaca("Cuaca hari : " + tanggal.get(i)));
-                            out.writeObject(new PesanCuaca("             " + cuaca.get(i)));
+                        for (int i=0; i<arrayPesan.size(); i++) {
+                            out.writeObject(new PesanCuaca("Cuaca hari : " + arrayPesan.get(i).getHari()+", " +arrayPesan.get(i).getTgl()));
+                            out.writeObject(new PesanCuaca("             " + arrayPesan.get(i).getCuaca()));
                             pesan.setPesanCuaca("");
                         }     
                   }
                   else {
                       int index=-1;
-                      for(int i=0;i<ramalan.size();i++){
-                        if(pesan.getString().equalsIgnoreCase(ramalan.get(i))){
+                      for(int i=0;i<arrayPesan.size();i++){
+                        if(pesan.getString().equalsIgnoreCase(arrayPesan.get(i).getHari())){
                             index=i;
                         }
                       }
@@ -109,9 +109,9 @@ class ServerCuacaThread extends Thread {
                           out.writeObject(new PesanCuaca("Perintah tidak dikenali"));
                       }
                       else{
-                          System.out.println("Cuaca hari "+ ramalan.get(index) +" : "+ cuaca.get(index));
+                          System.out.println("Cuaca hari "+ arrayPesan.get(index).getHari() +" : "+ arrayPesan.get(index).getCuaca());
                           try {
-                              out.writeObject(new PesanCuaca("Cuaca hari "+ ramalan.get(index) +" : "+ cuaca.get(index)));
+                              out.writeObject(new PesanCuaca("Cuaca hari "+ arrayPesan.get(index).getHari() +" : "+ arrayPesan.get(index).getCuaca()));
                           } 
                           catch (IOException ex) {
                               Logger.getLogger(ServerCuacaThread.class.getName()).log(Level.SEVERE, null, ex);
@@ -129,6 +129,11 @@ class ServerCuacaThread extends Thread {
           catch (IOException ex) {
               Logger.getLogger(ServerCuacaThread.class.getName()).log(Level.SEVERE, null, ex);
           } catch (ClassNotFoundException ex) {
+              Logger.getLogger(ServerCuacaThread.class.getName()).log(Level.SEVERE, null, ex);
+          }
+      }   catch (IOException ex) {
+              Logger.getLogger(ServerCuacaThread.class.getName()).log(Level.SEVERE, null, ex);
+          } catch (ParseException ex) {
               Logger.getLogger(ServerCuacaThread.class.getName()).log(Level.SEVERE, null, ex);
           }
       }
