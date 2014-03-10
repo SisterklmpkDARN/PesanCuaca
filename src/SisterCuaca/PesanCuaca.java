@@ -1,4 +1,4 @@
-package ramalancuaca;
+package SisterCuaca;
 
 import java.io.Serializable;
 

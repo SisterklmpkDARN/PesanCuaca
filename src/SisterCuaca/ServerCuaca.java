@@ -1,4 +1,4 @@
-package ramalancuaca;
+package SisterCuaca;
 
 import java.io.BufferedReader;
 import java.io.DataInputStream;
@@ -40,7 +40,7 @@ class ServerCuacaThread extends Thread {
       private PesanCuaca pesan =null;
       ArrayList<String> ramalan = new ArrayList<>();
       ArrayList<String> cuaca = new ArrayList<>();
-//    ArrayList<String> tanggal = new ArrayList<>();
+      ArrayList<String> tanggal = new ArrayList<>();
       
       public ServerCuacaThread(Socket socket) {
           super("ServerCuacaThread");
@@ -59,7 +59,7 @@ class ServerCuacaThread extends Thread {
           
           // Mengisi arraylist hari dan ramalannya
           try {
-              FileInputStream fstream = new FileInputStream("D:\\WeatherForecast.txt");
+              FileInputStream fstream = new FileInputStream("C:\\Users\\Prameswari\\Documents\\PesanCuaca\\src\\SisterCuaca\\WeatherForecast.txt");
             
               try (DataInputStream in = new DataInputStream(fstream)) {
                   BufferedReader br = new BufferedReader(new InputStreamReader(in));
@@ -69,10 +69,10 @@ class ServerCuacaThread extends Thread {
                   while ((strLine = br.readLine()) != null)  {
                       //System.out.println("strLine:" + strLine);
                       splitHari = strLine.split(",");
-                      //splitTanggal = strLine.split(" ");
+                      splitTanggal = strLine.split(" - ");
                       splitCuaca = splitHari[1].split(" - ");
                       ramalan.add(splitHari[0]);
-                      //tanggal.add(splitTanggal[1]);
+                      tanggal.add(splitTanggal[0]);
                       cuaca.add(splitCuaca[1]);
                   }
               }
@@ -91,7 +91,7 @@ class ServerCuacaThread extends Thread {
                   }
                   else if(pesan.getString().equalsIgnoreCase("semua")) {
                         for (int i=0; i<cuaca.size(); i++) {
-                            out.writeObject(new PesanCuaca("Cuaca hari : " + ramalan.get(i)));
+                            out.writeObject(new PesanCuaca("Cuaca hari : " + tanggal.get(i)));
                             out.writeObject(new PesanCuaca("             " + cuaca.get(i)));
                             pesan.setPesanCuaca("");
                         }     
