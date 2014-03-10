@@ -33,7 +33,7 @@ public class ClientCuacaSerial {
         try {
             // mengkoneksikan client dengan socket yang sudah ada di port 4444 untuk host: localhost
             socket = new Socket("localhost",4444);
-            System.out.println("Silahkan masukkan keyword nama hari");
+            System.out.println("Silahkan masukkan keyword nama hari atau ketik semua untuk seluruh perkiraan cuaca\n");
             // menghubungkan I/O stream dengan socket
             out = new PrintWriter(socket.getOutputStream(),true);
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -62,7 +62,7 @@ public class ClientCuacaSerial {
             fromUser = stdIn.readLine();
             ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
             if (fromUser != null) {
-                    // inputan dari console nantinya akan ditampilkan dari PrintWriter stream pada thread
+                // inputan dari console nantinya akan ditampilkan dari PrintWriter stream pada thread
                 oos.writeObject(new PesanCuaca(fromUser));
             }
         }

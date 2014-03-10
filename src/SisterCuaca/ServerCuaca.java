@@ -41,6 +41,7 @@ class ServerCuacaThread extends Thread {
       private PesanCuaca pesan =null;
       ArrayList<String> ramalan = new ArrayList<>();
       ArrayList<String> cuaca = new ArrayList<>();
+      ArrayList<String> tanggal = new ArrayList<>();
       
       public ServerCuacaThread(Socket socket) {
           super("ServerCuacaThread");
@@ -73,18 +74,23 @@ class ServerCuacaThread extends Thread {
                   String strLine = null;
                   String[] splitHari;
                   String[] splitCuaca;
+                  String[] splitTanggal;
 
                   while ((strLine = br.readLine()) != null)  {
                       //System.out.println("strLine:" + strLine);
                       splitHari = strLine.split(",");
+                      //splitTanggal = strLine.split(" ");
                       splitCuaca = splitHari[1].split(" - ");
                       ramalan.add(splitHari[0]);
+                      //tanggal.add(splitTanggal[1]);
                       cuaca.add(splitCuaca[1]);
-                }
-  //              for(int i=0;i<ramalan.size();i++){
-  //                  System.out.println(ramalan.get(i)); 
-  //                  System.out.println(cuaca.get(i));
-  //              }
+                  }
+                
+                  /*System.out.println("tes");
+                  for(int i=0;i<ramalan.size();i++){
+                      System.out.println(ramalan.get(i));
+                      System.out.println(cuaca.get(i));
+                }*/
               }
           }
           catch (Exception e){
@@ -94,7 +100,19 @@ class ServerCuacaThread extends Thread {
           try {
               int a = 0;
               while(true) {
+                  
                   if(pesan.getString().equals("exit")) break;
+                  else if(pesan.getString().equalsIgnoreCase("semua")) {
+                        for (int i=0; i<cuaca.size(); i++) {
+//                          int i = cuaca.indexOf(s);
+                            out.writeObject(new PesanCuaca("Cuaca hari : " + ramalan.get(i)));
+                            out.writeObject(new PesanCuaca("             " + cuaca.get(i)));
+                            pesan.setPesanCuaca("");
+                        }     
+                  }
+                  //else {
+                  //    out.writeObject(new PesanCuaca("input salah"));
+                  //}
                   
                   while(true) {
                       if(a==0) {
@@ -118,10 +136,11 @@ class ServerCuacaThread extends Thread {
                                 //break;
                                 pesan.setPesanCuaca("");
                                 break;
-                              } catch (IOException ex) {
+                            } 
+                            catch (IOException ex) {
                                 Logger.getLogger(ServerCuacaThread.class.getName()).log(Level.SEVERE, null, ex);
-                              }
-                          }
+                            }
+                        }
                         a=0;
                       }
                    }

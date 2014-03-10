@@ -16,3 +16,8 @@ Versi Billa :
 - Inputannya adalah hari, dengan huruf kapital, misal : Senin, Selasa
 - Hasilnya akan langsung mengeluarkan cuaca
 - Kalau inputannya huruf kecil akan infinite loop (belum diperbaiki)
+
+-------------------------------------------------------
+Update :
+- Inputan sudah bisa besar kecil (ex: Senin, senin, sEnIn, seMua, semua)
+- Sudah bisa print semua perkiraan cuaca, tapi di server masih infinite loop
