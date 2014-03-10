@@ -19,5 +19,9 @@ Versi Billa :
 
 -------------------------------------------------------
 Update :
-- Inputan sudah bisa besar kecil (ex: Senin, senin, sEnIn, seMua, semua)
-- Sudah bisa print semua perkiraan cuaca, tapi di server masih infinite loop
+- SERVER: Inputan sudah bisa besar kecil (ex: Senin, senin, sEnIn, seMua, semua)
+- CLIENT: Cek kondisi agar program client dapat berakhir dengan baik (return 0)
+- SERVER: Perbaikan logic program untuk menerima banyak inputan per client
+- SERVER: Cek kondisi jika inputan tidak dikenali
+
+note: nama package jangan lupa diubah
