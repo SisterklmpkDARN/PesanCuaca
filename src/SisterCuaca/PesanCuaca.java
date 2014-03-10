@@ -1,20 +1,11 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-package SisterCuaca;
+package ramalancuaca;
+
 import java.io.Serializable;
 
-/**
- *
- * @author hades
- */
-//nabilla tes
 public class PesanCuaca implements Serializable{
         private String pesanCuaca;
     public PesanCuaca(String pesanCuaca) {
-        this.pesanCuaca = pesanCuaca;
-        
+        this.pesanCuaca = pesanCuaca;   
     }
     public void setPesanCuaca(String pesanCuaca) {
       this.pesanCuaca= pesanCuaca;
@@ -23,6 +14,4 @@ public class PesanCuaca implements Serializable{
     public String getString() {
         return pesanCuaca;
     }
-    
-
 }
